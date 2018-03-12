@@ -2,8 +2,8 @@ FROM python:3-alpine
 
 ADD main.py /
 ADD requirements.txt /
+ADD VERSION /
 
-RUN git rev-parse HEAD > VERSION
 RUN pip install -r requirements.txt
 RUN rm requirements.txt
 
