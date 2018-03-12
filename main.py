@@ -11,20 +11,25 @@ from datetime import *
 from dateutil import parser
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-with open("VERSION") as f:
-    JASPURRBOT_VERSION = f.readline()
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
+try:
+    with open("VERSION") as f:
+        JASPURRBOT_VERSION = f.readline()
+except IOError:
+    logger.warning("VERSION file doesn't exist")
+    JASPURRBOT_VERSION = "don't know"
+
 TELEGRAM_TOKEN = ""
 DEFAULT_DATE = datetime.now()
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("-tgt", "--telegramtoken")
 args = argparser.parse_args()
-
-# Enable logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-
-logger = logging.getLogger(__name__)
 
 # Get telegram token
 if args.telegramtoken:
