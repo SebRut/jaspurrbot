@@ -33,7 +33,9 @@ if TELEGRAM_TOKEN == "":
     if "JASPURR_TG_TOKEN" in os.environ:
         TELEGRAM_TOKEN = os.environ["JASPURR_TG_TOKEN"]
     else:
-        logger.error("Telegram Token not provided. Ensure that your bot token is stored in JASPURR_TG_TOKEN or supplied as an argument.")
+        logger.error(
+            "Telegram Token not provided. Ensure that your bot token is stored in JASPURR_TG_TOKEN or supplied as an "
+            "argument.")
         exit(-1)
 
 
@@ -47,7 +49,7 @@ def miau(bot, update):
 
 def realmiau(bot, update):
     """Echo the user message."""
-    #bot.sendVoice(update.message.chat_id, "AwADBAAD-AUAAqM3AAFRGBfdxWFEvJEC")
+    # bot.sendVoice(update.message.chat_id, "AwADBAAD-AUAAqM3AAFRGBfdxWFEvJEC")
     bot.sendVoice(update.message.chat_id, "AwADBAADcgMAAj-XCVFePU9mLhwqowI")
 
 
@@ -67,42 +69,42 @@ def version(bot, update):
     bot.sendMessage(update.message.chat_id, JASPURRBOT_VERSION)
 
 
-def error(bot, update, error):
+def error(_, update, i):
     """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, error)
+    logger.warning('Update "%s" caused error "%s"', update, i)
 
 
 def check_for_time(bot, update):
     try:
-        ntime = parser.parse(update.message.text, default=DEFAULT_DATE, fuzzy=True)
-        jtime = to_jasper_time(ntime)
-        message = "{} entspricht {} in Jasperzeit".format(ntime.strftime("%H:%M Uhr am %d.%m.%Y"),
-                                                          jtime.strftime("%H:%M Uhr am %d.%m.%Y"))
+        n_time = parser.parse(update.message.text, default=DEFAULT_DATE, fuzzy=True)
+        j_time = to_jasper_time(n_time)
+        message = "{} entspricht {} in Jasperzeit".format(n_time.strftime("%H:%M Uhr am %d.%m.%Y"),
+                                                          j_time.strftime("%H:%M Uhr am %d.%m.%Y"))
         bot.sendMessage(update.message.chat_id, message)
     except ValueError:
         pass
 
 
-def to_jasper_time(ntime):
-    jtime = ntime + timedelta(minutes=random.randint(10, 30))
-    return jtime
+def to_jasper_time(n_time):
+    j_time = n_time + timedelta(minutes=random.randint(10, 30))
+    return j_time
 
 
 def jtime(bot, update):
     message = "Zeitformat unbekannt!"
     try:
         command = update.message.text
-        ntime = parser.parse(command[command.find(' '):], default=DEFAULT_DATE, fuzzy=True)
-        jtime = to_jasper_time(ntime)
-        message = "{} entspricht {} in Jasperzeit".format(ntime.strftime("%H:%M Uhr am %d.%m.%Y"),
-                                                          jtime.strftime("%H:%M Uhr am %d.%m.%Y"))
+        n_time = parser.parse(command[command.find(' '):], default=DEFAULT_DATE, fuzzy=True)
+        j_time = to_jasper_time(n_time)
+        message = "{} entspricht {} in Jasperzeit".format(n_time.strftime("%H:%M Uhr am %d.%m.%Y"),
+                                                          j_time.strftime("%H:%M Uhr am %d.%m.%Y"))
     except ValueError:
         pass
 
     bot.sendMessage(update.message.chat_id, message)
 
 
-def file_received(bot, update):
+def file_received(_, update):
     print(update.message)
 
 
@@ -126,14 +128,14 @@ def main():
     # log all errors
     dp.add_error_handler(error)
 
-    # TODO: reduce filters
-    dp.add_handler(MessageHandler(Filters.voice, file_received))
-    dp.add_handler(MessageHandler(Filters.audio, file_received))
-    dp.add_handler(MessageHandler(Filters.contact, file_received))
-    dp.add_handler(MessageHandler(Filters.document, file_received))
-    dp.add_handler(MessageHandler(Filters.photo, file_received))
-    dp.add_handler(MessageHandler(Filters.sticker, file_received))
-    dp.add_handler(MessageHandler(Filters.video, file_received))
+    # handle received files
+    dp.add_handler(MessageHandler(Filters.voice
+                                  | Filters.audio
+                                  | Filters.contact
+                                  | Filters.document
+                                  | Filters.photo
+                                  | Filters.sticker
+                                  | Filters.video, file_received))
 
     dp.add_handler(MessageHandler(Filters.text, check_for_time))
 
