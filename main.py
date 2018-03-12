@@ -11,6 +11,8 @@ from datetime import *
 from dateutil import parser
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
+with open("VERSION") as f:
+    JASPURRBOT_VERSION = f.readline()
 TELEGRAM_TOKEN = ""
 DEFAULT_DATE = datetime.now()
 
@@ -59,6 +61,10 @@ def agent(bot, update):
 
 def cheers(bot, update):
     bot.sendSticker(update.message.chat.id, "CAADAgADIwADCDNuC1qjnMjwLZ-OAg")
+
+
+def version(bot, update):
+    bot.sendMessage(update.message.chat_id, JASPURRBOT_VERSION)
 
 
 def error(bot, update, error):
@@ -115,10 +121,12 @@ def main():
     dp.add_handler(CommandHandler("jasperzeit", jtime))
     dp.add_handler(CommandHandler("jr600", agent))
     dp.add_handler(CommandHandler("cheers", cheers))
+    dp.add_handler(CommandHandler("version", version))
 
     # log all errors
     dp.add_error_handler(error)
 
+    # TODO: reduce filters
     dp.add_handler(MessageHandler(Filters.voice, file_received))
     dp.add_handler(MessageHandler(Filters.audio, file_received))
     dp.add_handler(MessageHandler(Filters.contact, file_received))
