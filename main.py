@@ -7,6 +7,7 @@ import random
 import os
 import argparse
 from datetime import *
+from textgenrnn import textgenrnn
 
 from dateutil import parser
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -42,6 +43,15 @@ if TELEGRAM_TOKEN == "":
             "Telegram Token not provided. Ensure that your bot token is stored in JASPURR_TG_TOKEN or supplied as an "
             "argument.")
         exit(-1)
+
+# load text generation model for jodel command
+textgen = None
+try:
+    textgen = textgenrnn(weights_path='jodler_weights.hdf5',
+                         vocab_path='jodler_vocab.json',
+                         config_path='jodler_config.json')
+except:
+    logger.error("Could not load \"jodler\" weights.")
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -113,6 +123,14 @@ def file_received(_, update):
     print(update.message)
 
 
+def jodel(bot, update):
+    """Generate a Jodel."""
+    if textgen is not None:
+        message = textgen.generate(1, return_as_list=True)[0]
+    else:
+        message = "I han k1 Jodel-Diplom :("
+    bot.sendMessage(update.message.chat_id, message)
+
 def main():
     """Start the bot."""
     # Create the EventHandler and pass it your bot's token.
@@ -126,6 +144,7 @@ def main():
     dp.add_handler(CommandHandler("realmiau", realmiau))
     dp.add_handler(CommandHandler("gadse", gadse))
     dp.add_handler(CommandHandler("jasperzeit", jtime))
+    dp.add_handler(CommandHandler("jodel", jodel))
     dp.add_handler(CommandHandler("jr600", agent))
     dp.add_handler(CommandHandler("cheers", cheers))
     dp.add_handler(CommandHandler("version", version))
