@@ -47,9 +47,9 @@ if TELEGRAM_TOKEN == "":
 # load text generation model for jodel command
 textgen = None
 try:
-    textgen = textgenrnn(weights_path='jodler_weights.hdf5',
-                         vocab_path='jodler_vocab.json',
-                         config_path='jodler_config.json')
+    textgen = textgenrnn(weights_path=os.path.join('model','jodler_weights.hdf5'),
+                         vocab_path=os.path.join('model','jodler_vocab.json'),
+                         config_path=os.path.join('model','jodler_config.json'))
 except:
     logger.error("Could not load \"jodler\" weights.")
 
