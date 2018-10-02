@@ -4,5 +4,5 @@ python-dateutil==2.7.3
 python-telegram-bot==10.0.1
 six==1.11.0
 textgenrnn==1.4
-Keras==2.1.6
+Keras==2.2.3
 tensorflow==1.11.0
