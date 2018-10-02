@@ -1,11 +1,10 @@
-FROM python:3-alpine
+FROM python:3.6
 
-RUN apt-get update && apt-get install -y --no-install-recommends --quiet \
+RUN apt update && apt install -y --no-install-recommends --quiet \
         build-essential \
         curl \
         libfreetype6-dev \
         libhdf5-serial-dev \
-        libpng12-dev \
         libzmq3-dev \
         pkg-config \
         rsync \
