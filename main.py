@@ -8,9 +8,16 @@ import os
 import argparse
 from datetime import *
 from textgenrnn import textgenrnn
-
 from dateutil import parser
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import tensorflow as tf
+from keras.backend import clear_session
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+global graph
+clear_session()
+graph = tf.get_default_graph()
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -126,7 +133,8 @@ def file_received(_, update):
 def jodel(bot, update):
     """Generate a Jodel."""
     if textgen is not None:
-        message = textgen.generate(1, return_as_list=True)[0]
+        with graph.as_default():
+            message = textgen.generate(1, return_as_list=True)[0]
     else:
         message = "I han k1 Jodel-Diplom :("
     bot.sendMessage(update.message.chat_id, message)
