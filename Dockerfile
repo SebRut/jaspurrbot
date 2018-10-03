@@ -16,6 +16,7 @@ RUN apt update && apt install -y --no-install-recommends --quiet \
 
 ADD main.py /
 ADD requirements.txt /
+ADD model /model/
 ADD VERSION /
 
 RUN pip install -r requirements.txt
