@@ -1,6 +1,6 @@
 ﻿certifi==2018.10.15
 future==0.16.0
-python-dateutil==2.7.4
+python-dateutil==2.7.5
 python-telegram-bot==11.1.0
 six==1.11.0
 textgenrnn==1.4.1
