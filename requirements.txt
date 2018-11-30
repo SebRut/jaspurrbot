@@ -1,4 +1,4 @@
-﻿certifi==2018.10.15
+﻿certifi==2018.11.29
 future==0.17.1
 python-dateutil==2.7.5
 python-telegram-bot==11.1.0
