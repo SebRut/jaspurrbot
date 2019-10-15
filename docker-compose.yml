@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  telegram-bot:
+    container_name: telegram-bot
+    hostname: telegram-bot
+    build:
+      - context: .
+      - dockerfile: ./Dockerfile
+    image: sebrut/jaspurrbot
+    environment:
+      - JASPURR_TG_TOKEN=
+    restart: unless-stopped
